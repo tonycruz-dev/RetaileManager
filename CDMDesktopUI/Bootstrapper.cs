@@ -1,11 +1,11 @@
 ﻿using Caliburn.Micro;
+using CDMDesktopUI.Library.API;
+using CDMDesktopUI.Library.Models;
 using CDMDesktopUI.Helpers;
 using CDMDesktopUI.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -13,7 +13,7 @@ namespace CDMDesktopUI
 {
     public class Bootstrapper: BootstrapperBase
     {
-        private SimpleContainer _container = new SimpleContainer();
+        private readonly SimpleContainer _container = new SimpleContainer();
         public Bootstrapper()
         {
             Initialize();
@@ -28,6 +28,7 @@ namespace CDMDesktopUI
             _container
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IEventAggregator, EventAggregator>()
+                .Singleton<ILoggedInUserModel, LoggedInUserModel>()
                 .Singleton<IAPIHelper, APIHelper>();
 
             GetType().Assembly.GetTypes()

@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace CDMLibrary.DataAccess
+namespace CDMDesktopUI.Library.Models
 {
-    public class UserModel
+    public class LoggedInUserModel : ILoggedInUserModel
     {
         public string Id { get; set; }
         public string FirstName { get; set; }
@@ -11,5 +15,6 @@ namespace CDMLibrary.DataAccess
         public DateTime CreatedDate { get; set; }
 
         public string Token { get; set; }
+
     }
 }

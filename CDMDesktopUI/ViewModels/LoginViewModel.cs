@@ -1,6 +1,8 @@
 ﻿using Caliburn.Micro;
+using CDMDesktopUI.Library.API;
+using CDMDesktopUI.Library.Models;
 using CDMDesktopUI.Helpers;
-using CDMDesktopUI.Models;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -90,6 +92,8 @@ namespace CDMDesktopUI.ViewModels
             {
                 ErrorMessage = "";
                 AuthenticatedUser user = await _apiHelper.Authenticate(UserName, Password);
+
+                await _apiHelper.GetLoggedInUserInfo(user.Access_token);
             }
             catch (Exception ex)
             {

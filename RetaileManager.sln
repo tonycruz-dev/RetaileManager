@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CDMDesktopUI", "CDMDesktopU
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CDMLibrary", "CDMLibrary\CDMLibrary.csproj", "{560B764D-38E6-4A92-9887-33D0D4501206}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CDMDesktopUI.Library", "CDMDesktopUI.Library\CDMDesktopUI.Library.csproj", "{236672AE-9923-492D-AF7B-095D716EEE78}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{560B764D-38E6-4A92-9887-33D0D4501206}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{560B764D-38E6-4A92-9887-33D0D4501206}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{560B764D-38E6-4A92-9887-33D0D4501206}.Release|Any CPU.Build.0 = Release|Any CPU
+		{236672AE-9923-492D-AF7B-095D716EEE78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{236672AE-9923-492D-AF7B-095D716EEE78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{236672AE-9923-492D-AF7B-095D716EEE78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{236672AE-9923-492D-AF7B-095D716EEE78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

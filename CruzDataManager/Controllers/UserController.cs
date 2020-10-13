@@ -15,11 +15,12 @@ namespace CruzDataManager.Controllers
     public class UserController : ApiController
     {
         [Route("UserById")]
-        public List<UserModel> UserById()
+        [HttpGet]
+        public UserModel UserById()
         {
             string id = RequestContext.Principal.Identity.GetUserId();
             UserData data = new UserData();
-           return  data.GetUserById(id);
+           return  data.GetUserById(id).First();
         }
     }
 }
