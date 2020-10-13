@@ -16,8 +16,8 @@ namespace CDMDesktopUI.ViewModels
     {
         private readonly IAPIHelper _apiHelper;
         private readonly IEventAggregator _eventAggregator;
-        private string _userName;
-        private string _password ;
+        private string _userName = "tony@me.com";
+        private string _password = "Tony@123456";
         public LoginViewModel(IAPIHelper apiHelper, IEventAggregator eventAggregator)
         {
             _apiHelper = apiHelper;

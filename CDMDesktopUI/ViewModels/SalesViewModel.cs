@@ -1,4 +1,6 @@
 ﻿using Caliburn.Micro;
+using CDMDesktopUI.Library.API;
+using CDMDesktopUI.Library.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,9 +12,24 @@ namespace CDMDesktopUI.ViewModels
 {
     public class SalesViewModel: Screen
     {
-        private BindingList<string> _products;
+        private readonly IProductEndPoint _productEndPoint;
 
-        public BindingList<string> Products
+        public SalesViewModel(IProductEndPoint productEndPoint)
+        {
+            _productEndPoint = productEndPoint;
+         }
+        protected override async void OnViewLoaded(object view)
+        {
+            base.OnViewLoaded(view);
+            await LoadProducts();
+        }
+        private async Task LoadProducts()
+        {
+            Products = new BindingList<ProductModel>(await _productEndPoint.GetAll());
+        }
+        private BindingList<ProductModel> _products;
+
+        public BindingList<ProductModel> Products
         {
             get { return _products; }
             set
@@ -21,10 +38,23 @@ namespace CDMDesktopUI.ViewModels
                 NotifyOfPropertyChange(() => Products);
             }
         }
+        private ProductModel _selectedProduct;
 
-        private BindingList<string> _cart;
+        public ProductModel SelectedProduct
+        {
+            get { return _selectedProduct; }
+            set 
+            {
+                _selectedProduct = value;
+                NotifyOfPropertyChange(() => SelectedProduct);
+                NotifyOfPropertyChange(() => CanAddToCart);
 
-        public BindingList<string> Cart
+            }
+        }
+
+        private BindingList<CartItemModel> _cart = new BindingList<CartItemModel>();
+
+        public BindingList<CartItemModel> Cart
         {
             get { return _cart; }
             set
@@ -35,6 +65,7 @@ namespace CDMDesktopUI.ViewModels
         }
 
         private int _itemQuantity;
+        
 
         public int ItemQuantity
         {
@@ -43,6 +74,7 @@ namespace CDMDesktopUI.ViewModels
             { 
                 _itemQuantity = value;
                 NotifyOfPropertyChange(() => ItemQuantity);
+                NotifyOfPropertyChange(() => CanAddToCart);
             }
         }
         public bool CanAddToCart
@@ -50,6 +82,10 @@ namespace CDMDesktopUI.ViewModels
             get
             {
                 bool output = false;
+                if (SelectedProduct?.QuantityInStock >=  ItemQuantity && ItemQuantity > 0)
+                {
+                    output = true;
+                }
                 return output;
             }
 
@@ -59,8 +95,12 @@ namespace CDMDesktopUI.ViewModels
         {
             get
             {
-                
-                return "£0.00";
+                decimal subtotal = 0;
+                foreach (var item in Cart)
+                {
+                    subtotal += (item.Product.RetailPrice * item.Quantity);
+                }
+                return subtotal.ToString("C");
             }
 
         }
@@ -84,6 +124,15 @@ namespace CDMDesktopUI.ViewModels
         }
         public void AddToCart()
         {
+            CartItemModel item = new CartItemModel
+            {
+                Product = SelectedProduct,
+                Quantity = ItemQuantity
+            };
+            Cart.Add(item);
+            SelectedProduct.QuantityInStock -= ItemQuantity;
+            ItemQuantity = 1;
+            NotifyOfPropertyChange(() => SubTotal);
 
         }
         public bool CanRemoveFromCart
@@ -97,7 +146,7 @@ namespace CDMDesktopUI.ViewModels
         }
         public void RemoveFromCart()
         {
-
+            NotifyOfPropertyChange(() => SubTotal);
         }
 
         public bool CanCheckOut

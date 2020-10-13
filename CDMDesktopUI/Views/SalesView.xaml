@@ -30,15 +30,21 @@
         <!--product Column 0-->
         <TextBlock Grid.Row="1" Grid.Column="0"
                    Text="Items"/>
-        <ListBox x:Name="Product" Grid.Row="2" Grid.Column="0"
-              MinHeight="200" MinWidth="100">
+        <ListBox ItemsSource="{Binding Products}" Grid.Row="2" Grid.Column="0"
+              MinHeight="200" MinWidth="100" SelectedItem="{Binding SelectedProduct}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                   <TextBlock Text="{Binding ProductName}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            
         </ListBox>
         <!-- Column 1-->
         <StackPanel Orientation="Vertical"
                     Grid.Column="1"
                     Grid.Row="2" Margin="20 0">
             <TextBlock Text="Quantity" Margin="10"/>
-            <TextBlock x:Name="ItemQuantity" Margin="10" MinWidth="100"/>
+            <TextBox x:Name="ItemQuantity" Margin="10" MinWidth="100"/>
             <Button x:Name="AddToCart" Margin="10 0 10 30" Padding="5" Content="Add to Cart"/>
             <Button x:Name="RemoveFromCart" Margin="10 0 10 30" Padding="5" Content="Remove from Cart"/>
 
@@ -48,6 +54,11 @@
                    Text="Cart"/>
         <ListBox x:Name="Cart" Grid.Row="2" Grid.Column="2"
               MinHeight="200" MinWidth="100">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding DisplayText}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
         </ListBox>
         <DockPanel  Grid.Row="3" Grid.Column="2">
             <TextBlock Text="Subtotal" Margin="0 0 10 0" />
