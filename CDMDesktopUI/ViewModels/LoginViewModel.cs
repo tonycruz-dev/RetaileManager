@@ -8,17 +8,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CDMDesktopUI.EventModels;
 
 namespace CDMDesktopUI.ViewModels
 {
     public class LoginViewModel: Screen
     {
         private readonly IAPIHelper _apiHelper;
+        private readonly IEventAggregator _eventAggregator;
         private string _userName;
         private string _password ;
-        public LoginViewModel(IAPIHelper apiHelper)
+        public LoginViewModel(IAPIHelper apiHelper, IEventAggregator eventAggregator)
         {
             _apiHelper = apiHelper;
+            _eventAggregator = eventAggregator;
         }
         public string UserName
         {
@@ -94,6 +97,7 @@ namespace CDMDesktopUI.ViewModels
                 AuthenticatedUser user = await _apiHelper.Authenticate(UserName, Password);
 
                 await _apiHelper.GetLoggedInUserInfo(user.Access_token);
+                _eventAggregator.PublishOnUIThread(new LogOnEvent());
             }
             catch (Exception ex)
             {
