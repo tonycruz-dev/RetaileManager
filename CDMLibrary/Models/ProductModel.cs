@@ -16,5 +16,6 @@ namespace CDMLibrary.Models
         public int QuantityInStock { get; set; }
         public string CreatedDate { get; set; }
         public string LastModified { get; set; }
+        public bool IsTaxable { get; set; }
     }
 }

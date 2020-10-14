@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using CDMDesktopUI.Library.API;
 using CDMDesktopUI.Library.Models;
+using CDMHelper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,11 +14,13 @@ namespace CDMDesktopUI.ViewModels
     public class SalesViewModel: Screen
     {
         private readonly IProductEndPoint _productEndPoint;
+        private readonly IConfigHelper _configHelper;
 
-        public SalesViewModel(IProductEndPoint productEndPoint)
+        public SalesViewModel(IProductEndPoint productEndPoint, IConfigHelper configHelper)
         {
             _productEndPoint = productEndPoint;
-         }
+            _configHelper = configHelper;
+        }
         protected override async void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);
@@ -108,8 +111,19 @@ namespace CDMDesktopUI.ViewModels
         {
             get
             {
+                decimal taxAmount = 0;
+                decimal taxRate = _configHelper.GetTax();
 
-                return "£0.00";
+                foreach (var item in Cart)
+                {
+                    if(item.Product.IsTaxable)
+                    {
+                        taxAmount += (item.Product.RetailPrice * item.Quantity * taxRate);
+                    }
+                    
+                }
+                return taxAmount.ToString("C");
+
             }
 
         }
