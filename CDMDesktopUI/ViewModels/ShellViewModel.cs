@@ -1,10 +1,6 @@
 ﻿using Caliburn.Micro;
 using CDMDesktopUI.EventModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CDMDesktopUI.ViewModels
 {
@@ -13,16 +9,15 @@ namespace CDMDesktopUI.ViewModels
         //private LoginViewModel _loginVM;
         private readonly IEventAggregator _eventAggregator;
         private readonly SalesViewModel _salesVM;
-        private readonly SimpleContainer _container;
 
-        public ShellViewModel(IEventAggregator eventAggregator, SalesViewModel salesVM, SimpleContainer container)
+        public ShellViewModel(IEventAggregator eventAggregator, SalesViewModel salesVM)
         {
            // _loginVM = loginVM;
             _salesVM = salesVM;
             _eventAggregator = eventAggregator;
-            _container = container;
+
             _eventAggregator.Subscribe(this);
-            ActivateItem(_container.GetInstance<LoginViewModel>());
+            ActivateItem(IoC.Get<LoginViewModel>());
         }
 
         public void Handle(LogOnEvent message)

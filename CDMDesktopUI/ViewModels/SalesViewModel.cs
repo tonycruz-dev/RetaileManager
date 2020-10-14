@@ -140,15 +140,18 @@ namespace CDMDesktopUI.ViewModels
         {
             decimal taxAmount = 0;
             decimal taxRate = _configHelper.GetTax()/100;
+            taxAmount = Cart
+                .Where(x => x.Product.IsTaxable)
+                .Sum(x => x.Product.RetailPrice * x.Quantity * taxRate);
 
-            foreach (var item in Cart)
-            {
-                if (item.Product.IsTaxable)
-                {
-                    taxAmount += (item.Product.RetailPrice * item.Quantity * taxRate);
-                }
+            //foreach (var item in Cart)
+            //{
+            //    if (item.Product.IsTaxable)
+            //    {
+            //        taxAmount += (item.Product.RetailPrice * item.Quantity * taxRate);
+            //    }
 
-            }
+            //}
             return taxAmount;
         }
         public string Total
