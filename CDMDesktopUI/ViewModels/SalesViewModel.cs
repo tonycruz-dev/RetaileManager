@@ -98,41 +98,65 @@ namespace CDMDesktopUI.ViewModels
         {
             get
             {
-                decimal subtotal = 0;
-                foreach (var item in Cart)
-                {
-                    subtotal += (item.Product.RetailPrice * item.Quantity);
-                }
-                return subtotal.ToString("C");
+                //decimal subtotal = CalculateSubtotal();
+                //foreach (var item in Cart)
+                //{
+                //    subtotal += (item.Product.RetailPrice * item.Quantity);
+                //}
+                return CalculateSubtotal().ToString("C");
             }
 
+        }
+        private decimal CalculateSubtotal()
+        {
+            decimal subtotal = 0;
+            foreach (var item in Cart)
+            {
+                subtotal += (item.Product.RetailPrice * item.Quantity);
+            }
+            return subtotal;
         }
         public string Tax
         {
             get
             {
-                decimal taxAmount = 0;
-                decimal taxRate = _configHelper.GetTax();
+                //decimal taxAmount = 0;
+                //decimal taxRate = _configHelper.GetTax();
 
-                foreach (var item in Cart)
-                {
-                    if(item.Product.IsTaxable)
-                    {
-                        taxAmount += (item.Product.RetailPrice * item.Quantity * taxRate);
-                    }
+                //foreach (var item in Cart)
+                //{
+                //    if(item.Product.IsTaxable)
+                //    {
+                //        taxAmount += (item.Product.RetailPrice * item.Quantity * taxRate);
+                //    }
                     
-                }
-                return taxAmount.ToString("C");
+                //}
+                return CalculateTax().ToString("C");
 
             }
 
+        }
+        private decimal CalculateTax()
+        {
+            decimal taxAmount = 0;
+            decimal taxRate = _configHelper.GetTax()/100;
+
+            foreach (var item in Cart)
+            {
+                if (item.Product.IsTaxable)
+                {
+                    taxAmount += (item.Product.RetailPrice * item.Quantity * taxRate);
+                }
+
+            }
+            return taxAmount;
         }
         public string Total
         {
             get
             {
-
-                return "£0.00";
+                decimal total = CalculateSubtotal() + CalculateTax();
+                return total.ToString("C");
             }
 
         }
@@ -160,6 +184,8 @@ namespace CDMDesktopUI.ViewModels
             ItemQuantity = 1;
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Cart);
+            NotifyOfPropertyChange(() => Tax);
+            NotifyOfPropertyChange(() => Total);
 
         }
         public bool CanRemoveFromCart
@@ -174,6 +200,8 @@ namespace CDMDesktopUI.ViewModels
         public void RemoveFromCart()
         {
             NotifyOfPropertyChange(() => SubTotal);
+            NotifyOfPropertyChange(() => Tax);
+            NotifyOfPropertyChange(() => Total);
         }
 
         public bool CanCheckOut

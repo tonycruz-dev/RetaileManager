@@ -9,6 +9,7 @@ set nocount on;
           ,[QuantityInStock]
           ,[CreatedDate]
           ,[LastModified]
+          ,[IsTaxable]
        FROM [dbo].[Product]
        order by ProductName
 end
