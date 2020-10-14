@@ -56,7 +56,7 @@
               MinHeight="200" MinWidth="100">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding DisplayText}" />
+                    <TextBlock Text="{Binding DisplayValue}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

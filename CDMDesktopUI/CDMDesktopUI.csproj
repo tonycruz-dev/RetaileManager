@@ -141,6 +141,10 @@
       <Project>{236672ae-9923-492d-af7b-095d716eee78}</Project>
       <Name>CDMDesktopUI.Library</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CDMHelper\CDMHelper.csproj">
+      <Project>{5083776d-180c-432e-9d94-fd816260d82e}</Project>
+      <Name>CDMHelper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
