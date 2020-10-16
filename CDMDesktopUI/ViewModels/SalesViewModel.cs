@@ -2,12 +2,14 @@
 using CDMDesktopUI.Library.API;
 using CDMDesktopUI.Library.Models;
 using CDMHelper;
+using CDMLibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ProductModel = CDMDesktopUI.Library.Models.ProductModel;
 
 namespace CDMDesktopUI.ViewModels
 {
@@ -144,14 +146,6 @@ namespace CDMDesktopUI.ViewModels
                 .Where(x => x.Product.IsTaxable)
                 .Sum(x => x.Product.RetailPrice * x.Quantity * taxRate);
 
-            //foreach (var item in Cart)
-            //{
-            //    if (item.Product.IsTaxable)
-            //    {
-            //        taxAmount += (item.Product.RetailPrice * item.Quantity * taxRate);
-            //    }
-
-            //}
             return taxAmount;
         }
         public string Total
@@ -189,6 +183,7 @@ namespace CDMDesktopUI.ViewModels
             NotifyOfPropertyChange(() => Cart);
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
+            NotifyOfPropertyChange(() => CanCheckOut);
 
         }
         public bool CanRemoveFromCart
@@ -205,6 +200,7 @@ namespace CDMDesktopUI.ViewModels
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
+            NotifyOfPropertyChange(() => CanCheckOut);
         }
 
         public bool CanCheckOut
@@ -212,12 +208,25 @@ namespace CDMDesktopUI.ViewModels
             get
             {
                 bool output = false;
+                if (Cart.Count > 0)
+                {
+                    output = true;
+                }
                 return output;
             }
 
         }
         public void CheckOut()
         {
+            SalesModel sale =  new SalesModel();
+            foreach (var item in Cart)
+            {
+                sale.SaleDetails.Add(new SaleDetailModel
+                {
+                    ProductId = item.Product.Id,
+                    Quantity = item.Quantity
+                });
+            }
 
         }
 

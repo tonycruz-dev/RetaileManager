@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CDMHelper
+namespace CDMLibrary
 {
-    public class ConfigHelper : IConfigHelper
+    public static class ConfigHelper
     {
-        public decimal GetTax()
+        public static decimal GetTax()
         {
 
             string taxRate = ConfigurationManager.AppSettings["taxRate"];
