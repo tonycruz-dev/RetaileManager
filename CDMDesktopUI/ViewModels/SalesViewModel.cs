@@ -68,6 +68,20 @@ namespace CDMDesktopUI.ViewModels
             }
         }
 
+        private CartItemDisplayModel _selectedCartItem;
+
+        public CartItemDisplayModel SelectedCartItem
+        {
+            get { return _selectedCartItem; }
+            set
+            {
+                _selectedCartItem = value;
+                NotifyOfPropertyChange(() => SelectedCartItem);
+                NotifyOfPropertyChange(() => CanRemoveFromCart);
+
+            }
+        }
+
         private BindingList<CartItemDisplayModel> _cart = new BindingList<CartItemDisplayModel>();
 
         public BindingList<CartItemDisplayModel> Cart
@@ -195,6 +209,7 @@ namespace CDMDesktopUI.ViewModels
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
             NotifyOfPropertyChange(() => CanCheckOut);
+            NotifyOfPropertyChange(() => CanRemoveFromCart);
             Products.ResetBindings();
             Cart.ResetBindings();
             //NotifyOfPropertyChange(() => SelectedProduct);
@@ -207,16 +222,32 @@ namespace CDMDesktopUI.ViewModels
             get
             {
                 bool output = false;
+                if (SelectedCartItem != null && SelectedCartItem?.Product.QuantityInStock > 0)
+                {
+                    output = true;
+                }
                 return output;
             }
 
         }
         public void RemoveFromCart()
         {
+            if (SelectedCartItem.Quantity > 1)
+            {
+                SelectedCartItem.Quantity -= 1;
+                SelectedCartItem.Product.QuantityInStock += 1;
+            }
+            else
+            {
+                SelectedCartItem.Product.QuantityInStock += 1;
+                Cart.Remove(SelectedCartItem);
+            }
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
             NotifyOfPropertyChange(() => CanCheckOut);
+            Products.ResetBindings();
+            Cart.ResetBindings();
         }
 
         public bool CanCheckOut
