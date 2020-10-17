@@ -1,6 +1,8 @@
-﻿using Caliburn.Micro;
+﻿using AutoMapper;
+using Caliburn.Micro;
 using CDMDesktopUI.Library.API;
 using CDMDesktopUI.Library.Models;
+using CDMDesktopUI.Models;
 using CDMHelper;
 using CDMLibrary.Models;
 using System;
@@ -9,7 +11,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ProductModel = CDMDesktopUI.Library.Models.ProductModel;
+
 
 namespace CDMDesktopUI.ViewModels
 {
@@ -18,12 +20,18 @@ namespace CDMDesktopUI.ViewModels
         private readonly IProductEndPoint _productEndPoint;
         private readonly IConfigHelper _configHelper;
         private readonly ISaleEndPont _saleEndPont;
+        private readonly IMapper _mapper;
 
-        public SalesViewModel(IProductEndPoint productEndPoint, IConfigHelper configHelper, ISaleEndPont saleEndPont)
+        public SalesViewModel(
+            IProductEndPoint productEndPoint, 
+            IConfigHelper configHelper, 
+            ISaleEndPont saleEndPont,
+            IMapper mapper)
         {
             _productEndPoint = productEndPoint;
             _configHelper = configHelper;
             _saleEndPont = saleEndPont;
+            _mapper = mapper;
         }
         protected override async void OnViewLoaded(object view)
         {
@@ -32,11 +40,12 @@ namespace CDMDesktopUI.ViewModels
         }
         private async Task LoadProducts()
         {
-            Products = new BindingList<ProductModel>(await _productEndPoint.GetAll());
+            var productList = await _productEndPoint.GetAll();
+            Products = new BindingList<ProductDisplayModel>(_mapper.Map<List<ProductDisplayModel>>(productList));
         }
-        private BindingList<ProductModel> _products;
+        private BindingList<ProductDisplayModel> _products;
 
-        public BindingList<ProductModel> Products
+        public BindingList<ProductDisplayModel> Products
         {
             get { return _products; }
             set
@@ -45,9 +54,9 @@ namespace CDMDesktopUI.ViewModels
                 NotifyOfPropertyChange(() => Products);
             }
         }
-        private ProductModel _selectedProduct;
+        private ProductDisplayModel _selectedProduct;
 
-        public ProductModel SelectedProduct
+        public ProductDisplayModel SelectedProduct
         {
             get { return _selectedProduct; }
             set 
@@ -59,9 +68,9 @@ namespace CDMDesktopUI.ViewModels
             }
         }
 
-        private BindingList<CartItemModel> _cart = new BindingList<CartItemModel>();
+        private BindingList<CartItemDisplayModel> _cart = new BindingList<CartItemDisplayModel>();
 
-        public BindingList<CartItemModel> Cart
+        public BindingList<CartItemDisplayModel> Cart
         {
             get { return _cart; }
             set
@@ -161,17 +170,17 @@ namespace CDMDesktopUI.ViewModels
         }
         public void AddToCart()
         {
-            CartItemModel existingItem = Cart.FirstOrDefault(c => c.Product == SelectedProduct);
+            CartItemDisplayModel existingItem = Cart.FirstOrDefault(c => c.Product == SelectedProduct);
 
             if (existingItem != null)
             {
                 existingItem.Quantity += ItemQuantity;
-                Cart.Remove(existingItem);
-                Cart.Add(existingItem);
+                //Cart.Remove(existingItem);
+                //Cart.Add(existingItem);
             }
             else 
             {
-                CartItemModel item = new CartItemModel
+                CartItemDisplayModel item = new CartItemDisplayModel
                 {
                     Product = SelectedProduct,
                     Quantity = ItemQuantity
@@ -182,10 +191,15 @@ namespace CDMDesktopUI.ViewModels
             SelectedProduct.QuantityInStock -= ItemQuantity;
             ItemQuantity = 1;
             NotifyOfPropertyChange(() => SubTotal);
-            NotifyOfPropertyChange(() => Cart);
+            //NotifyOfPropertyChange(() => Cart);
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
             NotifyOfPropertyChange(() => CanCheckOut);
+            Products.ResetBindings();
+            Cart.ResetBindings();
+            //NotifyOfPropertyChange(() => SelectedProduct);
+            //NotifyOfPropertyChange(() => Products);
+
 
         }
         public bool CanRemoveFromCart

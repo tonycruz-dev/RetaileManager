@@ -9,10 +9,10 @@ AS
 BEGIN
 
 	SET NOCOUNT ON;
-
-insert into [dbo].[Sale]([CashierId],[SaleDate],[SubTotal],[Tax],[Total])
+	DECLARE @InsertedRows AS TABLE (Id int);
+insert into [dbo].[Sale]([CashierId],[SaleDate],[SubTotal],[Tax],[Total]) OUTPUT Inserted.Id INTO @InsertedRows
   values(@CashierId,@SaleDate,@SubTotal,@Tax,@Total)
-  select @id = @@IDENTITY;
+ 
+ SELECT Id FROM @InsertedRows
 
 END
-GO
