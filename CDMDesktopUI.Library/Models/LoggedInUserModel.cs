@@ -16,5 +16,14 @@ namespace CDMDesktopUI.Library.Models
 
         public string Token { get; set; }
 
+        public void LogOutUser()
+        {
+            Id = "";
+            FirstName = "";
+            LastName = "";
+            Email = "";
+            CreatedDate = DateTime.MinValue;
+            Token = "";
+        }
     }
 }

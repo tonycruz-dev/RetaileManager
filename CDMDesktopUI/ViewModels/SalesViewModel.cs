@@ -43,6 +43,19 @@ namespace CDMDesktopUI.ViewModels
             var productList = await _productEndPoint.GetAll();
             Products = new BindingList<ProductDisplayModel>(_mapper.Map<List<ProductDisplayModel>>(productList));
         }
+        private async Task ResetViewModel()
+        {
+            Cart = new BindingList<CartItemDisplayModel>();
+            await LoadProducts();
+
+            NotifyOfPropertyChange(() => SubTotal);
+            NotifyOfPropertyChange(() => Tax);
+            NotifyOfPropertyChange(() => Total);
+            NotifyOfPropertyChange(() => CanCheckOut);
+            NotifyOfPropertyChange(() => CanRemoveFromCart);
+            Products.ResetBindings();
+            Cart.ResetBindings();
+        }
         private BindingList<ProductDisplayModel> _products;
 
         public BindingList<ProductDisplayModel> Products
@@ -275,6 +288,7 @@ namespace CDMDesktopUI.ViewModels
                 });
             }
            await _saleEndPont.AddSales(sale);
+            await ResetViewModel();
         }
 
 
