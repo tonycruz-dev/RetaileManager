@@ -12,6 +12,8 @@ namespace CDMDesktopUI.Library.API
     {
         Task<AuthenticatedUser> Authenticate(string userName, string password);
         Task GetLoggedInUserInfo(string token);
+        void LogoutUser();
+
         HttpClient ApiClient { get; }
     }
 }

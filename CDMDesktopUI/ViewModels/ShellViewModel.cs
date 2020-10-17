@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using CDMDesktopUI.EventModels;
+using CDMDesktopUI.Library.API;
 using CDMDesktopUI.Library.Models;
 using System;
 
@@ -11,12 +12,18 @@ namespace CDMDesktopUI.ViewModels
         private readonly IEventAggregator _eventAggregator;
         private readonly SalesViewModel _salesVM;
         private readonly ILoggedInUserModel _user;
+        private readonly IAPIHelper _apiHelper;
 
-        public ShellViewModel(IEventAggregator eventAggregator, SalesViewModel salesVM, ILoggedInUserModel user)
+        public ShellViewModel(
+            IEventAggregator eventAggregator, 
+            SalesViewModel salesVM, 
+            ILoggedInUserModel user,
+            IAPIHelper apiHelper)
         {
            // _loginVM = loginVM;
             _salesVM = salesVM;
             _user = user;
+            _apiHelper = apiHelper;
             _eventAggregator = eventAggregator;
 
             _eventAggregator.Subscribe(this);
@@ -48,8 +55,8 @@ namespace CDMDesktopUI.ViewModels
         }
         public void LogOut()
         {
-            // ExitApplication();
-            _user.LogOutUser();
+            _user.ResetUserModel();
+            _apiHelper.LogoutUser();
             ActivateItem(IoC.Get<LoginViewModel>());
             NotifyOfPropertyChange(() => IsLoggedIn);
         }

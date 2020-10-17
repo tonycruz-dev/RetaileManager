@@ -16,7 +16,7 @@ namespace CDMDesktopUI.Library.Models
 
         public string Token { get; set; }
 
-        public void LogOutUser()
+        public void ResetUserModel()
         {
             Id = "";
             FirstName = "";
