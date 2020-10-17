@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CDMLibrary.Internal.DataAccess
 {
-    internal class SqlDataAccess
+    internal class SqlDataAccess: IDisposable
     {
         public string GetConnectionString(string name)
         {
@@ -67,6 +67,83 @@ namespace CDMLibrary.Internal.DataAccess
                return connection.Query<int>(sqlStatement, parameter, commandType: commandType).SingleOrDefault();
 
             }
+        }
+        private IDbConnection _connection;
+        private IDbTransaction _dbTransaction;
+        public List<T> LoadDataInTransAction<T, U>(string storedProcedure, T parameter)
+        {
+
+            List<T> Rows = _connection.Query<T>(
+                storedProcedure, 
+                parameter, 
+                transaction: _dbTransaction).ToList();
+            return Rows;
+
+            
+        }
+
+        public int SaveDataAndReturnIdInTransaction<T>(string storedProcedure, T parameter)
+        {
+           return  _connection.Query<int>(
+                storedProcedure,
+                parameter,
+                commandType: CommandType.StoredProcedure,
+                transaction: _dbTransaction).SingleOrDefault();
+
+
+        }
+
+        public void SaveDataInTransaction<T>(string storedProcedure, T parameter)
+        {
+             _connection.Execute(
+                 storedProcedure, 
+                 parameter, 
+                 commandType: CommandType.StoredProcedure, 
+                 transaction: _dbTransaction);
+
+        
+        }
+       
+
+        public void StartTransaction(string connectionStringName)
+        {
+            string connectionString = GetConnectionString(connectionStringName);
+            _connection = new SqlConnection(connectionString);
+            _connection.Open();
+            _dbTransaction = _connection.BeginTransaction();
+            isClose = false;
+        
+        }
+        private bool isClose = false;
+        public void CommitTransaction()
+        {
+            _dbTransaction?.Commit();
+            _connection?.Close();
+            isClose = true;
+        }
+        public void RollbackTransaction()
+        {
+            _dbTransaction?.Rollback();
+            _connection?.Close();
+            isClose = true;
+        }
+
+        public void Dispose()
+        {
+            if (isClose == false)
+            {
+                try
+                {
+                    CommitTransaction();
+                }
+                catch 
+                {
+                }
+                
+            }
+            _dbTransaction = null;
+            _connection = null;
+            
         }
     }
 }

@@ -48,15 +48,37 @@ namespace CDMLibrary.DataAccess
             sale.SaleDate = DateTime.Now;
             sale.Total = sale.SubTotal + sale.Total;
 
-             SqlDataAccess _db = new SqlDataAccess();
-           var salesId =  _db.SaveDataWithId("dbo.spSale_Insert", sale, _connectionStringName, true);
-
-            foreach (var item in details)
+            using (SqlDataAccess _db = new SqlDataAccess())
             {
-                item.SaleId = salesId;
-                _db.SaveData("dbo.spSaleDetail_Insert", item, _connectionStringName, true);
+                try
+                {
+                    _db.StartTransaction(_connectionStringName);
+                    var salesId =  _db.SaveDataAndReturnIdInTransaction("dbo.spSale_Insert", sale);
+
+                    foreach (var item in details)
+                    {
+                        item.SaleId = salesId;
+                        _db.SaveDataInTransaction("dbo.spSaleDetail_Insert", item);
+                    }
+                   _db.CommitTransaction();
+                    return saleInfo;
+                }
+                catch 
+                {
+
+                    _db.RollbackTransaction();
+                    return saleInfo;
+                }
+               
             }
-            return saleInfo;
+            //var salesId = _db.SaveDataWithId("dbo.spSale_Insert", sale, _connectionStringName, true);
+
+            //foreach (var item in details)
+            //{
+            //    item.SaleId = salesId;
+            //    _db.SaveData("dbo.spSaleDetail_Insert", item, _connectionStringName, true);
+            //}
+            //return saleInfo;
         }
     }
 }
