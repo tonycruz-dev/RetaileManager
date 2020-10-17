@@ -20,5 +20,14 @@ namespace CDMLibrary.DataAccess
             return _db.LoadData<ProductModel, dynamic>
                 ("dbo.spProduct_GetAll", new { }, _connectionStringName, true);
         }
+        public ProductModel GetProductById(int Id)
+        {
+
+            SqlDataAccess _db = new SqlDataAccess();
+
+            return _db.LoadData<ProductModel, dynamic>
+                ("dbo.spProduct_ById", new { Id}, _connectionStringName, true).SingleOrDefault();
+        }
+    
     }
 }

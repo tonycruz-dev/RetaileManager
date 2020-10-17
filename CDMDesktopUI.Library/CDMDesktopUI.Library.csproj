@@ -51,7 +51,9 @@
     <Compile Include="API\APIHelper.cs" />
     <Compile Include="API\IAPIHelper.cs" />
     <Compile Include="API\IProductEndPoint.cs" />
+    <Compile Include="API\ISaleEndPont.cs" />
     <Compile Include="API\ProductEndPoint.cs" />
+    <Compile Include="API\SaleEndPont.cs" />
     <Compile Include="Models\AuthenticatedUser.cs" />
     <Compile Include="Models\CartItemModel.cs" />
     <Compile Include="Models\ILoggedInUserModel.cs" />

@@ -51,5 +51,22 @@ namespace CDMLibrary.Internal.DataAccess
 
             }
         }
+        public int SaveDataWithId<T>(string sqlStatement,
+                                      T parameter,
+                                      string connectionStringName,
+                                      bool isStoredProcedure)
+        {
+            string connectionString = GetConnectionString(connectionStringName);
+            CommandType commandType = CommandType.Text;
+            if (isStoredProcedure == true)
+            {
+                commandType = CommandType.StoredProcedure;
+            }
+            using (IDbConnection connection = new SqlConnection(connectionString))
+            {
+               return connection.Query<int>(sqlStatement, parameter, commandType: commandType).SingleOrDefault();
+
+            }
+        }
     }
 }

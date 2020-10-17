@@ -17,11 +17,13 @@ namespace CDMDesktopUI.ViewModels
     {
         private readonly IProductEndPoint _productEndPoint;
         private readonly IConfigHelper _configHelper;
+        private readonly ISaleEndPont _saleEndPont;
 
-        public SalesViewModel(IProductEndPoint productEndPoint, IConfigHelper configHelper)
+        public SalesViewModel(IProductEndPoint productEndPoint, IConfigHelper configHelper, ISaleEndPont saleEndPont)
         {
             _productEndPoint = productEndPoint;
             _configHelper = configHelper;
+            _saleEndPont = saleEndPont;
         }
         protected override async void OnViewLoaded(object view)
         {
@@ -216,7 +218,7 @@ namespace CDMDesktopUI.ViewModels
             }
 
         }
-        public void CheckOut()
+        public async void CheckOut()
         {
             SalesModel sale =  new SalesModel();
             foreach (var item in Cart)
@@ -227,7 +229,7 @@ namespace CDMDesktopUI.ViewModels
                     Quantity = item.Quantity
                 });
             }
-
+           await _saleEndPont.AddSales(sale);
         }
 
 

@@ -26,7 +26,8 @@ namespace CDMDesktopUI
         protected override void Configure()
         {
             _container.Instance(_container)
-                .PerRequest<IProductEndPoint, ProductEndPoint>();
+                .PerRequest<IProductEndPoint, ProductEndPoint>()
+                .PerRequest<ISaleEndPont, SaleEndPont>();
 
             _container
                 .Singleton<IWindowManager, WindowManager>()

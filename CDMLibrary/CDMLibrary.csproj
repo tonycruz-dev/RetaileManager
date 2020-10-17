@@ -47,9 +47,12 @@
   <ItemGroup>
     <Compile Include="ConfigHelper.cs" />
     <Compile Include="DataAccess\ProductData.cs" />
+    <Compile Include="DataAccess\SalesData.cs" />
     <Compile Include="DataAccess\UserModel.cs" />
     <Compile Include="DataAccess\UserData.cs" />
     <Compile Include="Models\ProductModel.cs" />
+    <Compile Include="Models\SaleDBModel.cs" />
+    <Compile Include="Models\SaleDetailDBModel.cs" />
     <Compile Include="Models\SaleDetailModel.cs" />
     <Compile Include="Models\SalesModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
