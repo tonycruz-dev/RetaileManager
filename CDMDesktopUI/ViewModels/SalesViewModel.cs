@@ -222,7 +222,7 @@ namespace CDMDesktopUI.ViewModels
             get
             {
                 bool output = false;
-                if (SelectedCartItem != null && SelectedCartItem?.Product.QuantityInStock > 0)
+                if (SelectedCartItem != null && SelectedCartItem?.Quantity > 0)
                 {
                     output = true;
                 }
