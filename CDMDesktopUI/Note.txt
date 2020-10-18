@@ -1,0 +1,9 @@
+﻿	insert into [dbo].[AspNetRoles] (id, Name) 
+	values(NEWID(),'Cashier')
+	     ,(NEWID(),'Manager')
+		 ,(NEWID(),'Admin')
+
+     Insert into [EFData].[dbo].[AspNetUserRoles](UserId,RoleId)
+     values ('f7ac4501-0b7a-45bb-8723-5a3124c608a2','A95CB326-86B1-4348-BB87-6CC883C681F4')
+	        ,('f7ac4501-0b7a-45bb-8723-5a3124c608a2','AFD3C453-6140-4F5F-9441-FC040BF0EC1F')
+			,('f7ac4501-0b7a-45bb-8723-5a3124c608a2','C3874C0C-A073-4291-A31C-E5679E1A33B0')

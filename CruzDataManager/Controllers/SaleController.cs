@@ -14,6 +14,7 @@ namespace CruzDataManager.Controllers
     [RoutePrefix("api/Sale")]
     public class SaleController : ApiController
     {
+        [Authorize(Roles = "Cashier")]
         [Route("AddSale")]
         [HttpPost]
         public void AddSale(SalesModel sale)
@@ -22,6 +23,7 @@ namespace CruzDataManager.Controllers
             SalesData data = new SalesData();
             data.SaveSale(sale, id);
         }
+        [Authorize(Roles = "Admin,Manager")]
         [Route("GetSalesReport")]
         [HttpGet]
         public List<SaleReportModel> GetSalesReport()

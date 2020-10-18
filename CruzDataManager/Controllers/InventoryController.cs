@@ -13,6 +13,7 @@ namespace CruzDataManager.Controllers
     [RoutePrefix("api/Inventory")]
     public class InventoryController : ApiController
     {
+        [Authorize(Roles = "Admin,Manager")]
         [Route("AddInventory")]
         [HttpPost]
         public void AddInventory(InventoryModel inventory)
@@ -22,6 +23,7 @@ namespace CruzDataManager.Controllers
             data.SaveInventoryRecord(inventory);
         }
 
+        [Authorize(Roles = "Admin")]
         [Route("GetInventory")]
         [HttpGet]
         public List<InventoryModel> GetSalesReport()

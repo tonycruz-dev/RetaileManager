@@ -9,7 +9,7 @@ using System.Web.Http;
 
 namespace CruzDataManager.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Cashier,Admin")]
     [RoutePrefix("api/products")]
     public class ProductsController : ApiController
     {

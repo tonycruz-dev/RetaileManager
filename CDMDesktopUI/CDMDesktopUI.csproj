@@ -138,7 +138,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Note.txt" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CDMDesktopUI.Library\CDMDesktopUI.Library.csproj">
       <Project>{236672ae-9923-492d-af7b-095d716eee78}</Project>
