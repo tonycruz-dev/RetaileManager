@@ -18,11 +18,16 @@ namespace CruzDataManager.Controllers
         [HttpPost]
         public void AddSale(SalesModel sale)
         {
-            Console.WriteLine();
             string id = RequestContext.Principal.Identity.GetUserId();
             SalesData data = new SalesData();
             data.SaveSale(sale, id);
-            //return data.GetUserById(id).First();
+        }
+        [Route("GetSalesReport")]
+        [HttpGet]
+        public List<SaleReportModel> GetSalesReport()
+        {
+            SalesData data = new SalesData();
+            return data.GetSaleReport();
         }
     }
 }

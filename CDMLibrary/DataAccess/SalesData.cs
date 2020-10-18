@@ -80,5 +80,14 @@ namespace CDMLibrary.DataAccess
             //}
             //return saleInfo;
         }
+        public List<SaleReportModel> GetSaleReport()
+        {
+
+          SqlDataAccess _db = new SqlDataAccess();
+
+                return _db.LoadData<SaleReportModel, dynamic>
+                    ("dbo.spSales_report", new { }, _connectionStringName, true);
+
+        }
     }
 }
