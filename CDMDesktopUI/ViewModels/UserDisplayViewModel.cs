@@ -109,14 +109,14 @@ namespace CDMDesktopUI.ViewModels
             }
         }
 
-        private BindingList<string> _avilableRoles = new BindingList<string>();
-        public BindingList<string> AvilableRoles
+        private BindingList<string> _avilableRole = new BindingList<string>();
+        public BindingList<string> AvilableRole
         {
-            get { return _avilableRoles; }
+            get { return _avilableRole; }
             set 
             { 
-                _avilableRoles = value;
-                NotifyOfPropertyChange(() => AvilableRoles);
+                _avilableRole = value;
+                NotifyOfPropertyChange(() => AvilableRole);
             }
         }
         private BindingList<string> _seletedRoleToRemove = new BindingList<string>();
@@ -129,14 +129,14 @@ namespace CDMDesktopUI.ViewModels
                 NotifyOfPropertyChange(() => SeletedRoleToRemove);
             }
         }
-        private string _selectedAvilableRoles;
-        public string SelectedAvilableRoles
+        private string _selectedAvilableRole;
+        public string SelectedAvilableRole
         {
-            get { return _selectedAvilableRoles; }
+            get { return _selectedAvilableRole; }
             set
             {
-                _selectedAvilableRoles = value;
-                NotifyOfPropertyChange(() => SelectedAvilableRoles);
+                _selectedAvilableRole = value;
+                NotifyOfPropertyChange(() => SelectedAvilableRole);
             }
         }
         private string _selectedUserRole;
@@ -157,20 +157,20 @@ namespace CDMDesktopUI.ViewModels
             {
                 if (UserRole.IndexOf(role.Value) < 0)
                 {
-                    AvilableRoles.Add(role.Value);
+                    AvilableRole.Add(role.Value);
                 }
             }
         }
         public async void AddSelectedRole()
         {
-            await  _userEndPoint.AddUserToRole(SelectedUser.Id, SelectedAvilableRoles);
-            UserRole.Add(SelectedAvilableRoles);
-            AvilableRoles.Remove(SelectedAvilableRoles);
+            await  _userEndPoint.AddUserToRole(SelectedUser.Id, SelectedAvilableRole);
+            UserRole.Add(SelectedAvilableRole);
+            AvilableRole.Remove(SelectedAvilableRole);
         }
         public async void RemoveSelectedItem()
         {
             await _userEndPoint.RemoveUserFromRole(SelectedUser.Id, SelectedUserRole);
-            AvilableRoles.Add(SelectedUserRole);
+            AvilableRole.Add(SelectedUserRole);
             UserRole.Remove(SelectedUserRole);
             
         }
