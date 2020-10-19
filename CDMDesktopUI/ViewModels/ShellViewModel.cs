@@ -53,6 +53,10 @@ namespace CDMDesktopUI.ViewModels
                 return output;
             }
         }
+        public void UserManagement()
+        {
+            ActivateItem(IoC.Get<UserDisplayViewModel>());
+        }
         public void LogOut()
         {
             _user.ResetUserModel();
