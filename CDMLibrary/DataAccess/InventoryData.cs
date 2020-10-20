@@ -9,27 +9,24 @@ using System.Threading.Tasks;
 
 namespace CDMLibrary.DataAccess
 {
-    public class InventoryData
+    public class InventoryData : IInventoryData
     {
         private const string _connectionStringName = "CDMDataConnection";
-        private readonly IConfiguration _config;
+        private readonly ISqlDataAccess _sqlDataAccess;
 
-        public InventoryData(IConfiguration config)
+        public InventoryData(ISqlDataAccess sqlDataAccess)
         {
-            _config = config;
+            _sqlDataAccess = sqlDataAccess;
         }
         public List<InventoryModel> GetInventory()
         {
 
-            SqlDataAccess _db = new SqlDataAccess(_config);
-
-            return _db.LoadData<InventoryModel, dynamic>
+            return _sqlDataAccess.LoadData<InventoryModel, dynamic>
                 ("dbo.spInventory_GetAll", new { }, _connectionStringName, true);
         }
         public void SaveInventoryRecord(InventoryModel inventory)
         {
-            SqlDataAccess _db = new SqlDataAccess(_config);
-            _db.SaveData("dbo.spInventory_Insert", inventory, _connectionStringName, true);
+            _sqlDataAccess.SaveData("dbo.spInventory_Insert", inventory, _connectionStringName, true);
         }
     }
 }

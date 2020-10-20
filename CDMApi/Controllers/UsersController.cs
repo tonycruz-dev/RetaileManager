@@ -22,20 +22,22 @@ namespace CDMApi.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IConfiguration _config;
+        private readonly IUserData _userData;
 
-        public UsersController(ApplicationDbContext context, UserManager<IdentityUser> userManager, IConfiguration config)
+        public UsersController(ApplicationDbContext context,
+                               UserManager<IdentityUser> userManager,
+                               IUserData userData)
         {
             _context = context;
             _userManager = userManager;
-            _config = config;
+            _userData = userData;
         }
        
         [HttpGet("UserById")]
         public UserModel UserById()
         {
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            UserData data = new UserData(_config);
-            return data.GetUserById(id).First();
+            return _userData.GetUserById(id).First();
         }
         
         [Authorize(Roles = "Admin")]

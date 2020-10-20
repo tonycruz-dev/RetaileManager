@@ -10,31 +10,27 @@ using System.Threading.Tasks;
 
 namespace CDMLibrary.DataAccess
 {
-    public class ProductData
+    public class ProductData : IProductData
     {
-        private const string _connectionStringName =  "CDMDataConnection";
-        private readonly IConfiguration _config;
+        private const string _connectionStringName = "CDMDataConnection";
+         private readonly ISqlDataAccess _db;
 
-        public ProductData(IConfiguration config)
+        public ProductData(ISqlDataAccess db)
         {
-            _config = config;
-        }  
+        
+            _db = db;
+        }
         public List<ProductModel> GetProducts()
         {
-
-            SqlDataAccess _db = new SqlDataAccess(_config);
 
             return _db.LoadData<ProductModel, dynamic>
                 ("dbo.spProduct_GetAll", new { }, _connectionStringName, true);
         }
         public ProductModel GetProductById(int Id)
         {
-
-            SqlDataAccess _db = new SqlDataAccess(_config);
-
             return _db.LoadData<ProductModel, dynamic>
-                ("dbo.spProduct_ById", new { Id}, _connectionStringName, true).SingleOrDefault();
+                ("dbo.spProduct_ById", new { Id }, _connectionStringName, true).SingleOrDefault();
         }
-    
+
     }
 }

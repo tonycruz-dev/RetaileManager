@@ -1,32 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CDMLibrary.DataAccess;
+﻿using CDMLibrary.DataAccess;
 using CDMLibrary.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 
 namespace CDMApi.Controllers
 {
-    [Authorize(Roles = "Cashier")]
+    //[Authorize(Roles = "Cashier")]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly IConfiguration _config;
+        //private readonly IConfiguration _config;
+        private readonly IProductData _productData;
 
-        public ProductsController(IConfiguration config)
+        public ProductsController(IProductData productData)
         {
-            _config = config;
+            _productData = productData;
         }
         [HttpGet("GetProducts")]
         public List<ProductModel> GetProducts()
         {
-            ProductData data = new ProductData(_config);
-            return data.GetProducts();
+            return _productData.GetProducts();
         }
     }
 }

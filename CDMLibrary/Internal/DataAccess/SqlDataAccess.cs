@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CDMLibrary.Internal.DataAccess
 {
-    internal class SqlDataAccess: IDisposable
+    public class SqlDataAccess : IDisposable, ISqlDataAccess
     {
         private readonly IConfiguration _config;
         public SqlDataAccess(IConfiguration config)
@@ -21,7 +21,7 @@ namespace CDMLibrary.Internal.DataAccess
         public string GetConnectionString(string name)
         {
             return _config.GetConnectionString(name);
-           // return @"Server=(localdb)\mssqllocaldb;Database=CDMData;Trusted_Connection=True;MultipleActiveResultSets=true"; //ConfigurationManager.ConnectionStrings[name].ConnectionString;
+            // return @"Server=(localdb)\mssqllocaldb;Database=CDMData;Trusted_Connection=True;MultipleActiveResultSets=true"; //ConfigurationManager.ConnectionStrings[name].ConnectionString;
         }
         public List<T> LoadData<T, U>(string sqlStatement,
                                       U parameter,
@@ -71,7 +71,7 @@ namespace CDMLibrary.Internal.DataAccess
             }
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
-               return connection.Query<int>(sqlStatement, parameter, commandType: commandType).SingleOrDefault();
+                return connection.Query<int>(sqlStatement, parameter, commandType: commandType).SingleOrDefault();
 
             }
         }
@@ -81,36 +81,36 @@ namespace CDMLibrary.Internal.DataAccess
         {
 
             List<T> Rows = _connection.Query<T>(
-                storedProcedure, 
-                parameter, 
+                storedProcedure,
+                parameter,
                 transaction: _dbTransaction).ToList();
             return Rows;
 
-            
+
         }
 
         public int SaveDataAndReturnIdInTransaction<T>(string storedProcedure, T parameter)
         {
-           return  _connection.Query<int>(
-                storedProcedure,
-                parameter,
-                commandType: CommandType.StoredProcedure,
-                transaction: _dbTransaction).SingleOrDefault();
+            return _connection.Query<int>(
+                 storedProcedure,
+                 parameter,
+                 commandType: CommandType.StoredProcedure,
+                 transaction: _dbTransaction).SingleOrDefault();
 
 
         }
 
         public void SaveDataInTransaction<T>(string storedProcedure, T parameter)
         {
-             _connection.Execute(
-                 storedProcedure, 
-                 parameter, 
-                 commandType: CommandType.StoredProcedure, 
-                 transaction: _dbTransaction);
+            _connection.Execute(
+                storedProcedure,
+                parameter,
+                commandType: CommandType.StoredProcedure,
+                transaction: _dbTransaction);
 
-        
+
         }
-       
+
 
         public void StartTransaction(string connectionStringName)
         {
@@ -119,10 +119,10 @@ namespace CDMLibrary.Internal.DataAccess
             _connection.Open();
             _dbTransaction = _connection.BeginTransaction();
             isClose = false;
-        
+
         }
         private bool isClose = false;
-      
+
 
         public void CommitTransaction()
         {
@@ -145,14 +145,14 @@ namespace CDMLibrary.Internal.DataAccess
                 {
                     CommitTransaction();
                 }
-                catch 
+                catch
                 {
                 }
-                
+
             }
             _dbTransaction = null;
             _connection = null;
-            
+
         }
     }
 }

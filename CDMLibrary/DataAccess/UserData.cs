@@ -8,24 +8,21 @@ using System.Threading.Tasks;
 
 namespace CDMLibrary.DataAccess
 {
-    public class UserData
+    public class UserData : IUserData
     {
         private const string _connectionStringName = "CDMDataConnection";
-        private readonly IConfiguration _config;
+          private readonly ISqlDataAccess _db;
 
-        public UserData(IConfiguration config)
+        public UserData(ISqlDataAccess db)
         {
-            _config = config;
+            _db = db;
         }
         public List<UserModel> GetUserById(string id)
         {
-
-            SqlDataAccess _db = new SqlDataAccess(_config);
-
-           return _db.LoadData<UserModel, dynamic>("dbo.spUserLookup",
-                                            new { id },
-                                            _connectionStringName,
-                                            true);
+             return _db.LoadData<UserModel, dynamic>("dbo.spUserLookup",
+                                             new { id },
+                                             _connectionStringName,
+                                             true);
         }
     }
 }

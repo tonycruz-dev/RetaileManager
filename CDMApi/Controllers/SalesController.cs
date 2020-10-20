@@ -17,26 +17,26 @@ namespace CDMApi.Controllers
     [Route("api/[controller]")]
     public class SalesController : ControllerBase
     {
-        private readonly IConfiguration _config;
 
-        public SalesController(IConfiguration config)
+        private readonly ISalesData _salesData;
+
+        public SalesController(ISalesData salesData)
         {
-            _config = config;
+            _salesData = salesData;
         }
         [Authorize(Roles = "Cashier")]
         [HttpPost("AddSale")]
         public void AddSale(SalesModel sale)
         {
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier); // RequestContext.Principal.Identity.GetUserId();
-            SalesData data = new SalesData(_config);
-            data.SaveSale(sale, id);
+            
+            _salesData.SaveSale(sale, id);
         }
         [Authorize(Roles = "Admin,Manager")]
         [HttpGet("GetSalesReport")]
         public List<SaleReportModel> GetSalesReport()
         {
-            SalesData data = new SalesData(_config);
-            return data.GetSaleReport();
+            return _salesData.GetSaleReport();
         }
     }
 }
