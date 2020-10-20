@@ -21,7 +21,7 @@ namespace CDMDesktopUI.Library.API
         public async Task<SalesModel> AddSales(SalesModel sales)
         {
 
-            using (HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Sale/AddSale", sales))
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Sales/AddSale", sales))
             {
 
                 if (response.IsSuccessStatusCode)

@@ -1,8 +1,10 @@
 ﻿using CDMDesktopUI.Library.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,7 +23,7 @@ namespace CDMDesktopUI.Library.API
         public async Task<List<AppUserModel>> GetUsers()
         {
 
-            using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/User/GetAllUsers"))
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/Users/GetAllUsers"))
             {
 
                 if (response.IsSuccessStatusCode)
@@ -39,7 +41,7 @@ namespace CDMDesktopUI.Library.API
         public async Task<Dictionary<string, string>> GetRoles()
         {
 
-            using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/User/GetRoles"))
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/Users/GetRoles"))
             {
 
                 if (response.IsSuccessStatusCode)
@@ -58,7 +60,13 @@ namespace CDMDesktopUI.Library.API
         public async Task AddUserToRole(string userId, string role)
         {
             var data = new { userId, role };
-            using (HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api/User/AddUserToRole", data))
+           // var ur = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
+            //var orderJson =  new StringContent(JsonSerializer.Serialize(order), Encoding.UTF8, "application/json");
+
+            // var response = await _httpClient.PostAsync("api/orders", orderJson);
+            // var newOrder = await response.Content.ReadFromJsonAsync<Order>();
+            
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api​/Users​/AddNewRole", data))
             {
 
                 if (response.IsSuccessStatusCode == false)
@@ -67,10 +75,25 @@ namespace CDMDesktopUI.Library.API
                 }
             }
         }
+       
         public async Task RemoveUserFromRole(string userId, string role)
         {
             var data = new { userId, role };
-            using (HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api/User/RemoveRole", data))
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Users/RemoveRole", data))
+            {
+
+                if (response.IsSuccessStatusCode == false)
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
+        public async Task AddRole(string userId, string role)
+        {
+            var data = new UserRoleDataDto { UserId = userId, Role = role };
+            var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+            
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.PostAsync("/api​/Users​/AddToRole", content))
             {
 
                 if (response.IsSuccessStatusCode == false)

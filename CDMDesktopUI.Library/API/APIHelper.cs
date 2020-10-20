@@ -72,7 +72,7 @@ namespace CDMDesktopUI.Library.API
             _apiClient.DefaultRequestHeaders.Accept.Clear();
             _apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             _apiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
-            using (HttpResponseMessage response = await _apiClient.GetAsync("api/User/UserById"))
+            using (HttpResponseMessage response = await _apiClient.GetAsync("/api/Users/UserById"))
             {
 
                 if (response.IsSuccessStatusCode)

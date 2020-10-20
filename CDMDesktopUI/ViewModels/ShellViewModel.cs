@@ -3,6 +3,8 @@ using CDMDesktopUI.EventModels;
 using CDMDesktopUI.Library.API;
 using CDMDesktopUI.Library.Models;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CDMDesktopUI.ViewModels
 {
@@ -10,36 +12,26 @@ namespace CDMDesktopUI.ViewModels
     {
         //private LoginViewModel _loginVM;
         private readonly IEventAggregator _eventAggregator;
-        private readonly SalesViewModel _salesVM;
         private readonly ILoggedInUserModel _user;
         private readonly IAPIHelper _apiHelper;
 
         public ShellViewModel(
-            IEventAggregator eventAggregator, 
-            SalesViewModel salesVM, 
+            IEventAggregator eventAggregator,
             ILoggedInUserModel user,
             IAPIHelper apiHelper)
         {
-           // _loginVM = loginVM;
-            _salesVM = salesVM;
+
             _user = user;
             _apiHelper = apiHelper;
             _eventAggregator = eventAggregator;
 
-            _eventAggregator.Subscribe(this);
-            ActivateItem(IoC.Get<LoginViewModel>());
+            _eventAggregator.SubscribeOnPublishedThread(this);
+            ActivateItemAsync(IoC.Get<LoginViewModel>());
         }
-
-        public void Handle(LogOnEvent message)
-        {
-            ActivateItem(_salesVM);
-            NotifyOfPropertyChange(() => IsLoggedIn);
-           // _loginVM = _container.GetInstance<LoginViewModel>();
-        }
-        public void ExitApplication()
+        public async void ExitApplication()
         {
             // ExitApplication();
-            TryClose();
+           await TryCloseAsync();
         }
         public bool IsLoggedIn
         {
@@ -53,17 +45,22 @@ namespace CDMDesktopUI.ViewModels
                 return output;
             }
         }
-        public void UserManagement()
+        public async void UserManagement()
         {
-            ActivateItem(IoC.Get<UserDisplayViewModel>());
+           await ActivateItemAsync(IoC.Get<UserDisplayViewModel>());
         }
-        public void LogOut()
+        public async void LogOut()
         {
             _user.ResetUserModel();
             _apiHelper.LogoutUser();
-            ActivateItem(IoC.Get<LoginViewModel>());
+           await ActivateItemAsync(IoC.Get<LoginViewModel>());
             NotifyOfPropertyChange(() => IsLoggedIn);
         }
-        
+
+        public async Task HandleAsync(LogOnEvent message, CancellationToken cancellationToken)
+        {
+           await ActivateItemAsync(IoC.Get<SalesViewModel>());
+            NotifyOfPropertyChange(() => IsLoggedIn);
+        }
     }
 }

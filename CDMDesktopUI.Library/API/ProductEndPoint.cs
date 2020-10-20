@@ -20,7 +20,7 @@ namespace CDMDesktopUI.Library.API
         public async Task<List<ProductModel>> GetAll()
         {
 
-            using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/Products"))
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/Products/GetProducts"))
             {
 
                 if (response.IsSuccessStatusCode)

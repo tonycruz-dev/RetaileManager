@@ -1,5 +1,6 @@
 ﻿using CDMLibrary.Internal.DataAccess;
 using CDMLibrary.Models;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,18 @@ namespace CDMLibrary.DataAccess
     public class SalesData
     {
         private const string _connectionStringName = "CDMDataConnection";
+        private readonly IConfiguration _config;
 
+        public SalesData(IConfiguration config)
+        {
+            _config = config;
+        }
         public SalesModel SaveSale(SalesModel saleInfo, string userId)
         {
-            ProductData products = new ProductData();
+            ProductData products = new ProductData(_config);
             List<SaleDetailDBModel> details = new List<SaleDetailDBModel>();
-            decimal taxRate = ConfigHelper.GetTax() / 100;
+            decimal taxRate = decimal.Parse(_config["taxRate"]);
+            // var title = Configuration["Position:Title"];
             foreach (var item in saleInfo.SaleDetails)
             {
                 var detail = new SaleDetailDBModel
@@ -48,7 +55,7 @@ namespace CDMLibrary.DataAccess
             sale.SaleDate = DateTime.Now;
             sale.Total = sale.SubTotal + sale.Total;
 
-            using (SqlDataAccess _db = new SqlDataAccess())
+            using (SqlDataAccess _db = new SqlDataAccess(_config))
             {
                 try
                 {
@@ -83,7 +90,7 @@ namespace CDMLibrary.DataAccess
         public List<SaleReportModel> GetSaleReport()
         {
 
-          SqlDataAccess _db = new SqlDataAccess();
+          SqlDataAccess _db = new SqlDataAccess(_config);
 
                 return _db.LoadData<SaleReportModel, dynamic>
                     ("dbo.spSales_report", new { }, _connectionStringName, true);

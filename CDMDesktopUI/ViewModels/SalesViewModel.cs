@@ -56,15 +56,15 @@ namespace CDMDesktopUI.ViewModels
                 if (ex.Message == "Unauthorized")
                 {
                     _status.UpdateMessage("Unauthorized Access", "You do not have permission to interact with sales Form ");
-                    _windowManager.ShowDialog(_status, null, settings);
+                    _windowManager.ShowDialogAsync(_status, null, settings);
                 }
                 else
                 {
                     _status.UpdateMessage("Error Exception", ex.Message);
-                    _windowManager.ShowDialog(_status, null, settings);
+                    _windowManager.ShowDialogAsync(_status, null, settings);
                 }
                 
-                TryClose();
+                await TryCloseAsync();
             }
             
         }

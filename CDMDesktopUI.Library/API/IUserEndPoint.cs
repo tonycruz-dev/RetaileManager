@@ -10,5 +10,6 @@ namespace CDMDesktopUI.Library.API
         Task<Dictionary<string, string>> GetRoles();
         Task<List<AppUserModel>> GetUsers();
         Task RemoveUserFromRole(string userId, string roleId);
+        Task AddRole(string userId, string roleId);
     }
 }

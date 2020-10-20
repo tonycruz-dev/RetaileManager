@@ -97,7 +97,7 @@ namespace CDMDesktopUI.ViewModels
                 AuthenticatedUser user = await _apiHelper.Authenticate(UserName, Password);
 
                 await _apiHelper.GetLoggedInUserInfo(user.Access_token);
-                _eventAggregator.PublishOnUIThread(new LogOnEvent());
+               await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent());
             }
             catch (Exception ex)
             {

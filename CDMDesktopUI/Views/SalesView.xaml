@@ -31,7 +31,7 @@
         <TextBlock Grid.Row="1" Grid.Column="0"
                    Text="Items"/>
         <ListBox ItemsSource="{Binding Products}" Grid.Row="2" Grid.Column="0"
-              MinHeight="200" MinWidth="100" SelectedItem="{Binding SelectedProduct}">
+              MinHeight="200" MinWidth="100" FontSize="14" SelectedItem="{Binding SelectedProduct}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Vertical">
@@ -64,7 +64,7 @@
         <TextBlock Grid.Row="1" Grid.Column="2"
                    Text="Cart"/>
         <ListBox x:Name="Cart" Grid.Row="2" Grid.Column="2"
-              MinHeight="200" MinWidth="100" SelectedItem="{Binding SelectedCartItem}">
+              MinHeight="200" MinWidth="100" FontSize="14" SelectedItem="{Binding SelectedCartItem}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding DisplayValue}" />

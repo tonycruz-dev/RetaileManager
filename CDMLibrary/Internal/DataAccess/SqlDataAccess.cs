@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -12,9 +13,15 @@ namespace CDMLibrary.Internal.DataAccess
 {
     internal class SqlDataAccess: IDisposable
     {
+        private readonly IConfiguration _config;
+        public SqlDataAccess(IConfiguration config)
+        {
+            _config = config;
+        }
         public string GetConnectionString(string name)
         {
-            return ConfigurationManager.ConnectionStrings[name].ConnectionString;
+            return _config.GetConnectionString(name);
+           // return @"Server=(localdb)\mssqllocaldb;Database=CDMData;Trusted_Connection=True;MultipleActiveResultSets=true"; //ConfigurationManager.ConnectionStrings[name].ConnectionString;
         }
         public List<T> LoadData<T, U>(string sqlStatement,
                                       U parameter,
@@ -115,6 +122,8 @@ namespace CDMLibrary.Internal.DataAccess
         
         }
         private bool isClose = false;
+      
+
         public void CommitTransaction()
         {
             _dbTransaction?.Commit();

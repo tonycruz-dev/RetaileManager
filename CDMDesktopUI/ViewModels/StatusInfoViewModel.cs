@@ -21,7 +21,7 @@ namespace CDMDesktopUI.ViewModels
         }
         public void Close()
         {
-            TryClose();
+            TryCloseAsync();
         }
     }
 }
