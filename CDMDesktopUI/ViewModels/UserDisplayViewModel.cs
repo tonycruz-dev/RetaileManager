@@ -163,6 +163,10 @@ namespace CDMDesktopUI.ViewModels
         }
         public async void AddSelectedRole()
         {
+           await AddItemRole();
+        }
+        private async Task AddItemRole()
+        {
             await  _userEndPoint.AddRole(SelectedUser.Id, SelectedAvilableRole);
             UserRole.Add(SelectedAvilableRole);
             AvilableRole.Remove(SelectedAvilableRole);

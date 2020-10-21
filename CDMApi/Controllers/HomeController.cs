@@ -32,7 +32,7 @@ namespace CDMApi.Controllers
 
         public async Task<IActionResult> Privacy()
         {
-            string[] roles = { "Adminstrator", "AppManager", "AppCashier" };
+            string[] roles = { "Admin", "Manager", "Cashier" };
 
             foreach (var role in roles)
             {
@@ -44,8 +44,8 @@ namespace CDMApi.Controllers
 
             }
             var user = await _userManager.FindByEmailAsync("tony@me.com");
-            await _userManager.AddToRoleAsync(user, "Adminstrator");
-            await _userManager.AddToRoleAsync(user, "AppCashier");
+            await _userManager.AddToRoleAsync(user, "Admin");
+            await _userManager.AddToRoleAsync(user, "Cashier");
             return View();
         }
 

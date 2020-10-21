@@ -92,8 +92,10 @@ namespace CDMDesktopUI.Library.API
         {
             var data = new UserRoleDataDto { UserId = userId, Role = role };
             var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
-            
-            using (HttpResponseMessage response = await _apiHelper.ApiClient.PostAsync("/api​/Users​/AddToRole", content))
+
+            //using (HttpResponseMessage response = await _apiHelper.ApiClient.PostAsync("/api​/Users​/AddToRole", content))
+            ///api/AuthManager/CreateNewRole
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Users/CreateNewRole", data))
             {
 
                 if (response.IsSuccessStatusCode == false)

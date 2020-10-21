@@ -113,7 +113,7 @@ namespace CDMApi.Controllers
        // [Authorize(Roles = "Admin")]
         [AllowAnonymous]
         [HttpPost("CreateNewRole")]
-        public async Task AddNewRole(UserRoleDataDto userRole)
+        public async Task AddNewRole(Models.UserRoleDataDto userRole)
         {
             var user = await _userManager.FindByIdAsync(userRole.UserId);
             await _userManager.AddToRoleAsync(user, userRole.Role);
