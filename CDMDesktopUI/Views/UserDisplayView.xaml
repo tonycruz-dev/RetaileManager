@@ -31,7 +31,7 @@
         <TextBlock Grid.Row="1" Grid.Column="0"
                    Text="Users"/>
         <ListBox x:Name="Users"  Grid.Row="2" Grid.Column="0"
-              MinHeight="300" MinWidth="200" SelectedItem="SelectedUser">
+              MinHeight="300" MinWidth="200" SelectedItem="SelectedUser" Margin="10,10,10,10">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Vertical">
@@ -43,22 +43,23 @@
 
         </ListBox>
         <!-- Column 1-->
-        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="0 0 0 10">
-            <TextBlock x:Name="SelectedUserName" Margin="0 0 0 10"/>
-            <TextBlock Text="Roles"/>
+        <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="0 0 0 10">
+            <TextBlock x:Name="SelectedUserName" Margin="10"/>
+            <TextBlock Text="Roles" Margin="10" />
             <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
-                <ListBox x:Name="UserRole"/>
+                <ListBox x:Name="UserRole" Margin="10"/>
 
 
-                <Button x:Name="RemoveSelectedItem" Content="Remove role" Margin="5 0 0 0"/>
+                <Button x:Name="RemoveSelectedItem" Content="Remove role" Margin="5"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
                 <!--<ComboBox x:Name="AvilableRoles" SelectedItem="SeletedRoleToAdd"/>-->
-                <ComboBox x:Name="AvilableRole"/>
-                <Button x:Name="AddSelectedRole" Content="Add Selected Role" Margin="5 0 0 0"/>
+                <ComboBox x:Name="AvilableRole" Margin="10"/>
+                <Button x:Name="AddSelectedRole" Content="Add Selected Role" Margin="5"/>
             </StackPanel>
 
-        </StackPanel>      
-        
+        </StackPanel>
+        <Path Data="M-2.5082853,112.29333 L798.46376,109.64667" Fill="#FFF4F4F5" Margin="0,30,0,-1" Grid.Row="1" Stretch="Fill" Stroke="Black" Grid.ColumnSpan="5" d:LayoutOverrides="HorizontalAlignment"/>
+
     </Grid>
 </UserControl>

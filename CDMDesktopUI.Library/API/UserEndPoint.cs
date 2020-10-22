@@ -60,11 +60,7 @@ namespace CDMDesktopUI.Library.API
         public async Task AddUserToRole(string userId, string role)
         {
             var data = new { userId, role };
-           // var ur = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
-            //var orderJson =  new StringContent(JsonSerializer.Serialize(order), Encoding.UTF8, "application/json");
 
-            // var response = await _httpClient.PostAsync("api/orders", orderJson);
-            // var newOrder = await response.Content.ReadFromJsonAsync<Order>();
             
             using (HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api​/Users​/AddNewRole", data))
             {

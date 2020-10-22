@@ -26,12 +26,12 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <!--Header -->
-        <TextBlock Text="Sales Page" Margin="0 0 0 20" FontSize="50" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
+        <TextBlock Text="Sales Page" Margin="0 0 0 20" FontSize="45" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" TextAlignment="Center"/>
         <!--product Column 0-->
         <TextBlock Grid.Row="1" Grid.Column="0"
-                   Text="Items"/>
+                   Text="Items" Margin="9,0,0,0"/>
         <ListBox ItemsSource="{Binding Products}" Grid.Row="2" Grid.Column="0"
-              MinHeight="200" MinWidth="100" FontSize="14" SelectedItem="{Binding SelectedProduct}">
+              MinHeight="200" MinWidth="200" FontSize="14" SelectedItem="{Binding SelectedProduct}" Grid.RowSpan="6" Margin="10,0,0,0">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Vertical">
@@ -48,7 +48,7 @@
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-            
+
         </ListBox>
         <!-- Column 1-->
         <StackPanel Orientation="Vertical"
@@ -64,7 +64,7 @@
         <TextBlock Grid.Row="1" Grid.Column="2"
                    Text="Cart"/>
         <ListBox x:Name="Cart" Grid.Row="2" Grid.Column="2"
-              MinHeight="200" MinWidth="100" FontSize="14" SelectedItem="{Binding SelectedCartItem}">
+              MinHeight="200" MinWidth="200" FontSize="14" SelectedItem="{Binding SelectedCartItem}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding DisplayValue}" />
@@ -84,6 +84,7 @@
             <TextBlock x:Name="Total" Text="£0.00" TextAlignment="Right" />
         </DockPanel>
         <Button x:Name="CheckOut" Grid.Row="6" Grid.Column="2" Padding="5" Margin="10 10 10 30" Content="Check out"/>
+        <Path Data="M0,84.666667 L799.5,85.166664" Fill="#FF1C1C1C" Margin="0,85,0,0" Stretch="Fill" Stroke="Black" Grid.ColumnSpan="5" d:LayoutOverrides="HorizontalAlignment"/>
 
     </Grid>
 

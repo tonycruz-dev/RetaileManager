@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,14 +24,17 @@ namespace CDMApi.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IConfiguration _config;
         private readonly IUserData _userData;
+        private readonly ILogger<UsersController> _logger;
 
         public UsersController(ApplicationDbContext context,
                                UserManager<IdentityUser> userManager,
-                               IUserData userData)
+                               IUserData userData,
+                               ILogger<UsersController> logger)
         {
             _context = context;
             _userManager = userManager;
             _userData = userData;
+            _logger = logger;
         }
        
         [HttpGet("UserById")]
@@ -99,14 +103,23 @@ namespace CDMApi.Controllers
         [HttpPost("AddToRole")]
         public async Task AddToRole(UserRoleDataDto userRole)
         {
+            string loggedId =  User.FindFirstValue(ClaimTypes.NameIdentifier);
+  
+            
             var user = await _userManager.FindByIdAsync(userRole.UserId);
+            _logger.LogInformation("Admin {Admin} added user {user} to role {role}",
+                loggedId, user.Id, userRole.Role);
             await _userManager.AddToRoleAsync(user, userRole.Role);
          }
         [Authorize(Roles = "Admin")]
         [HttpPost("RemoveRole")]
         public async Task RemoveRole(UserRoleDataDto userRole)
         {
+            string loggedId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var user = await _userManager.FindByIdAsync(userRole.UserId);
+            _logger.LogInformation("Admin {Admin} Remove user {user} to role {role}",
+               loggedId, user.Id, userRole.Role);
             await _userManager.RemoveFromRoleAsync(user, userRole.Role);
 
         }
@@ -115,7 +128,10 @@ namespace CDMApi.Controllers
         [HttpPost("CreateNewRole")]
         public async Task AddNewRole(Models.UserRoleDataDto userRole)
         {
+            string loggedId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await _userManager.FindByIdAsync(userRole.UserId);
+            _logger.LogInformation("Admin {Admin} added user {user} to role {role}",
+               loggedId, user.Id, userRole.Role);
             await _userManager.AddToRoleAsync(user, userRole.Role);
         }
     }
